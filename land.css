@@ -24,6 +24,11 @@ body {
   font-weight: bold;
 }
 
+.food_logo{
+  height: 100px;
+  
+}
+
 .nav a {
   color: #fff;
   text-decoration: none;
@@ -102,3 +107,4 @@ body {
     font-size: 36px;
   }
 }
+
