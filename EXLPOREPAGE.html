@@ -6,10 +6,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <title>Hassan Food Scope</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     body{
-  font-family: 'Poppins', sans-serif;
-}
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Fade In */
+    @keyframes fadeInVideo {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Slow Zoom */
+    @keyframes slowZoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    .hero-video {
+      animation: fadeInVideo 2s ease-in-out forwards,
+                 slowZoom 20s ease-in-out infinite alternate;
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    .hero-overlay {
+      transition: backdrop-filter 0.3s ease, background 0.3s ease;
+    }
   </style>
 </head>
 
@@ -27,11 +50,25 @@
 <!-- HERO SECTION -->
 <section
   id="hero"
-  class="relative w-full h-[90vh] bg-center bg-cover"
-  style="background-image:url('WhatsApp Image 2026-01-25 at 5.43.01 PM.jpeg');"
+  class="relative w-full h-[90vh] overflow-hidden"
 >
-  <div class="absolute inset-0 bg-black/60"></div>
 
+  <!-- VIDEO -->
+  <video
+    id="heroVideo"
+    autoplay
+    muted
+    loop
+    playsinline
+    class="hero-video absolute inset-0 w-full h-full object-cover"
+  >
+    <source src="Food_Video_Generation_Request.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Overlay -->
+  <div id="heroOverlay" class="hero-overlay absolute inset-0 bg-black/60"></div>
+
+  <!-- TEXT -->
   <div
     id="heroText"
     class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4
@@ -45,7 +82,6 @@
       From Benne Dosa to Biryani & Desserts — explore the best food places in Hassan
     </p>
 
-    <!-- SEARCH BAR -->
     <div class="w-full max-w-2xl">
       <div class="flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20
                   rounded-2xl px-5 py-4 shadow-2xl">
@@ -79,13 +115,34 @@
 </section>
 
 <script>
+// ---------------- PARALLAX + BLUR ON SCROLL ----------------
+const hero = document.getElementById("hero");
+const heroVideo = document.getElementById("heroVideo");
+const heroOverlay = document.getElementById("heroOverlay");
+
+window.addEventListener("scroll", () => {
+  const scrollY = window.scrollY;
+
+  // Parallax movement
+  heroVideo.style.transform =
+    `translateY(${scrollY * 0.3}px) scale(${1 + scrollY * 0.0003})`;
+
+  // Blur effect
+  const blurValue = Math.min(scrollY / 100, 6);
+  heroVideo.style.filter = `blur(${blurValue}px)`;
+
+  // Darken overlay slightly
+  heroOverlay.style.background =
+    `rgba(0,0,0,${0.6 + scrollY * 0.0008})`;
+});
+
 // ---------------- DATA ----------------
 const foodPlaces = [
  {id:1,name:"1952 Coffee",items:"Filter Coffee, Walnut Banana Cake",location:"Hassan",tag:"Cafe"},
   {id:2,name:"Sri Hanuman Jalebi",items:"Jalebi",location:"Gandhi Bazar, Hassan",tag:"Sweet"},
-  {id:3,name:"Hilal’s",items:"Juice",location:"233X+GJP, Ammeer Mohalla, Hassan, Karnataka 573201, India",tag:"Juice"},
+  {id:3,name:"Hilal’s",items:"Juice",location:"Ammeer Mohalla,Hassan",tag:"Juice"},
   {id:4,name:"ಗುಂಡಣ್ಣ ಬೇಕರಿ",items:"Chocolate Bun, Egg Puff",location:"Doddabasadi Road,Hassan",tag:"Bakery"},
-  {id:5,name:"Shri Gajanana Refreshments",items:"Benne Dosa",location:"Krishnaraja Puram 5th cross st, Sampige Road, Hassan",tag:"Restaurant"},
+  {id:5,name:"Shri Gajanana Refreshments",items:"Benne Dosa",location:"Krishnaraja Puram 5th cross st, Sampige Road, Hassan, Karnataka 573201, India",tag:"Restaurant"},
   {id:6,name:"Hotel Gommatadri Veg",items:"Rice Sambar, Chapati",location:"MG Road",tag:"Meals"},
   {id:7,name:"Halli Mane Baduta",items:"Family Restaurant",location:"BM Road",tag:"Non-Veg"},
   {id:8,name:"Arya Mansion",items:"South Indian Meals",location:"Hassan",tag:"Meals"},
@@ -94,10 +151,10 @@ const foodPlaces = [
   {id:11,name:"Classy Restaurant",items:"Grill Chicken",location:"RC Road,Hassan",tag:"Grill"},
   {id:12,name:"Corn Territory",items:"Corn",location:"Jaya Nagar",tag:"Snack"},
   {id:13,name:"Idli Mamu Hotel",items:"Idli, Dosa, Vada",location:"Penshan Mohalla",tag:"Breakfast"},
-  {id:14,name:"HVR Veg Tiffin Center",items:"Button Idli, Kesari Bath",location:"2nd Main road, Kuvempu Nagar, Krishnaraja Pura, Hassan",tag:"Breakfast"},
+  {id:14,name:"HVR Veg Tiffin Center",items:"Button Idli, Kesari Bath",location:"2445+4R3, 2nd Main road, Kuvempu Nagar, Krishnaraja Pura, Hassan, Karnataka 573201, India",tag:"Breakfast"},
   {id:15,name:"Pastel Cakes",items:"Cakes",location:"Near Sanjeevini Hospital Road, KR Puram,Hassan",tag:"Bakery"},
   {id:16,name:"Mamatha Hotel",items:"Biryani",location:"BM Road",tag:"Biryani"},
-  {id:17,name:"Shawarma House",items:"Shawarma",location:"Sahyadri Circle,Penshan Mohalla, Hassan",tag:"Rolls"},
+  {id:17,name:"Shawarma house ",items:"Shawarma",location:"Sahyadri Circle,Penshan Mohalla, Hassan",tag:"Rolls"},
   {id:18,name:"Hassan vaibhav veg benne dose corner",items:"Benne Dose",location:"Penshan Mohalla, Hassan",tag:"Dosa"},
   {id:19,name:"Sanman Hotel",items:"North & South Indian Meals",location:"23, Old Bus Stand Rd, Ammeer Mohalla, Hassan, Karnataka 573201, India",tag:"Meals"},
   {id:20,name:"Pillai Mess",items:"Mutton Biryani",location:"Hosaline Road",tag:"Non-Veg"},
@@ -105,18 +162,18 @@ const foodPlaces = [
   {id:22,name:"ARUN ICECREAM ",items:"Ice Cream",location:"RC Road,Hassan",tag:"Ice Cream"},
   {id:23,name:"Hasanamba Dose Corner",items:"Dosa",location:"Salagame Road",tag:"Breakfast"},
   {id:24,name:"Belgian Waffles",items:"Waffles",location:" Park Rd, Rangoli Halla, Hassan, Karnataka 573201",tag:"Dessert"},
-  {id:25, name:"HOTEL MACHALI", items:"Fish", location:"RC Road,Hassan", tag:"Non-Veg"},
-  {id:26, name:"Lalitha Bakery", items:"Honey Cake, Aloo Bun", location:"Gandhi bazar, Main Road, Ammeer Mohalla, Hassan", tag:"Bakery"},
-  {id:27, name:"Lakshmi Sweets and Tiffins", items:"Chapati,Mentha Chapati,Badam milk", location:" Opposite old bus stand,Hassan ", tag:"Sweet"},
-  {id:28, name:"Pavithra Fast Food", items:"Roti,butter roti,Gobi", location:"Ravindra Nagar, Vidhya Nagar,Hassan", tag:"fast meals"},
-  {id:29, name:"Harsha Sweets", items:"Champakali, Jamoon & more", location:"Near Dwaragate Circle, Hassan", tag:"Sweet"},
-  {id:30, name:"Devanarayan Pav Bhaji Centre", items:"Pav Bhaji, Vada Pav", location:"MG Rd, behind Stadium, Vidhya Nagar,Hassan", tag:"Street Food"},
-  {id:31, name:"HVR Veg", items:"Benne dosa,Vada", location:"KR Puram,hassan", tag:"Breakfast"},
-  {id:32,  name:"Hassan Famous Momos", items:" Momos", location:"MG Road,Hassan", tag:"Street Food"},
-  { id: 33, name: "Preetham's Bread Bajji", items: "Bread Bajji, Capsicum Bajji", location: "Hemavathi Nagara", tag: "Bajji" },
+  {id:25,name:"HOTEL MACHALI",items:"Fish",location:"RC Road,Hassan",tag:"Non-veg"},
+  {id:26,name:"Lalitha Bakery",items:"Honey Cake, Aloo Bun",location:"Gandhi bazar, Main Road, Ammeer Mohalla, Hassan, Karnataka 573201, India",tag:"Bakery"},
+  {id:27,name:"Lakshmi Sweets and Tiffins",items:"Chapati,Mentha Chapati,Badam milk",location:" Opposite old bus stand,Hassan ",tag:"Sweet"},
+  {id:28,name:"Pavithra Fast Food",items:"Roti,butter roti,Gobi",location:"Ravindra Nagar, Vidhya Nagar",tag:"fast meals"},
+  {id:29,name:"Harsha Sweets",items:"Champakali, Jamoon & more",location:"Near Dwaragate Circle, Hassan",tag:"Sweet"},
+  {id:30,name:"Devanarayan Pav Bhaji Centre",items:"Pav Bhaji, Vada Pav",location:"MG Rd, behind Stadium, Vidhya Nagar, Hassan, Karnataka 573202",tag:"Street Food"},
+  {id:31,name:"HVR Veg",items:"Benne dosa,Vada",location:"KR Puram,hassan",tag:"Breakfast"},
+  {id:32,name:" Hassan Famous Momos",items:" Momos",location:"MG Road,Hassan",tag:"Street Food"},
+  {id:33,name:"Preetham's Bread Bajji",items:"Bread Bajji, Capsicum Bajji",location:"Hemavathi Nagara",tag:"Bajji"},
 ];
 
-// ---------------- LOGIC ----------------
+// Your original rendering logic remains same below (unchanged)
 const searchInput = document.getElementById("searchInput");
 const foodGrid = document.getElementById("foodGrid");
 const countText = document.getElementById("countText");
@@ -136,7 +193,6 @@ function render() {
   filtered.forEach(p => {
     const card = document.createElement("div");
 
-    // ⭐ HOVER EFFECTS ADDED HERE
     card.className = `
       bg-gradient-to-br from-gray-800 to-gray-900
       rounded-xl p-6 border border-gray-700 shadow-xl
@@ -188,7 +244,7 @@ function render() {
 
 render();
 
-// HERO ANIMATION
+// Hero text animation
 const heroText = document.getElementById("heroText");
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -204,12 +260,3 @@ observer.observe(heroText);
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
